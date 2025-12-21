@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+/* Page */
+.client-form-page {
+    min-height: 100vh;
+    background: #0a0f1f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    font-family: 'Poppins', sans-serif;
+    color: #9ca3af;
+}
+
+/* Card */
+.client-form-card {
+    width: 100%;
+    max-width: 620px;
+    background: #111827;
+    border-radius: 22px;
+    padding: 40px 45px;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.7);
+}
+
+/* Title */
+.client-form-card h1 {
+    color: #e5e7eb;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+/* Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Full width */
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+/* Label */
+.client-form-card label {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: #6b7280;
+}
+
+/* Input wrapper */
+.input-box {
+    position: relative;
+}
+
+/* Inputs */
+.client-form-card .form-control {
+    width: 100%;
+    background: #0a0f1f;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 14px 15px;
+    color: #e5e7eb;
+    font-size: 15px;
+    transition: 0.25s;
+}
+
+.client-form-card .form-control:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30,64,175,0.25);
+}
+
+/* Buttons */
+.btn-save {
+    width: 100%;
+    padding: 15px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+    border: none;
+    color: #e5e7eb;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 30px;
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(30,64,175,0.6);
+}
+
+.btn-back {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 14px;
+    background: #374151;
+    color: #e5e7eb;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background: #4b5563;
+}
+</style>
+
+<div class="client-form-page">
+    <div class="client-form-card">
+        <h1>{{ client is defined ? 'Modifier le client' : 'Créer un client' }}</h1>
+
+        {{ form_start(form) }}
+
+        <div class="form-grid">
+            {% for field in form %}
+                <div class="{{ field.vars.name in ['email'] ? 'form-group-full' : '' }}">
+                    {{ form_label(field) }}
+                    <div class="input-box">
+                        {{ form_widget(field, { 'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button class="btn-save">
+            {{ client is defined ? 'Mettre à jour' : 'Créer' }}
+        </button>
+
+        {{ form_end(form) }}
+
+        <a href="{{ path('admin_clients_index') }}" class="btn-back">
+            ← Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+/* Page */
+.clients-page {
+    min-height: 100vh;
+    background: #0a0f1f;
+    padding: 40px;
+    font-family: 'Poppins', sans-serif;
+    color: #9ca3af;
+}
+
+/* Header */
+.clients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.clients-header h1 {
+    color: #e5e7eb;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+/* Add button */
+.btn-add {
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+    border: none;
+    padding: 12px 22px;
+    border-radius: 14px;
+    color: #e5e7eb;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-add:hover {
+    box-shadow: 0 15px 30px rgba(30,64,175,0.5);
+    transform: translateY(-2px);
+}
+
+/* Card */
+.clients-card {
+    background: #111827;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+}
+
+/* Table override Bootstrap (NO WHITE) */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+    --bs-table-hover-bg: transparent;
+    color: #9ca3af;
+    background-color: transparent;
+}
+
+.table thead {
+    background: #0f172a;
+}
+
+.table tbody tr {
+    background-color: #111827; /* fond dark */
+    transition: background 0.3s ease;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #0f172a; /* alternance élégante */
+}
+
+.table tbody tr:hover {
+    background-color: rgba(30,64,175,0.18);
+}
+
+.table th {
+    border: none;
+    padding: 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.table td {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 14px;
+    vertical-align: middle;
+    color: #9ca3af;
+}
+
+/* Hover */
+.table tbody tr:hover {
+    background: rgba(30,64,175,0.12);
+}
+
+/* Buttons */
+.btn-edit {
+    background: #f59e0b;
+    border: none;
+    color: #0a0f1f;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-delete {
+    background: #b91c1c;
+    border: none;
+    color: #e5e7eb;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Empty state */
+.table .text-muted {
+    color: #6b7280 !important;
+}
+</style>
+
+<div class="clients-page">
+    <div class="clients-header">
+        <h1>Clients</h1>
+        <a href="{{ path('admin_clients_new') }}" class="btn-add">
+            + Ajouter un client
+        </a>
+    </div>
+
+    <div class="clients-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.firstName }}</td>
+                    <td>{{ client.lastName }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>
+                        <a href="{{ path('admin_clients_edit', {'id': client.id}) }}" class="btn-edit">
+                            Modifier
+                        </a>
+
+                        <form method="post"
+                              action="{{ path('admin_clients_delete', {'id': client.id}) }}"
+                              style="display:inline-block;"
+                              onsubmit="return confirm('Supprimer ce client ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                            <button class="btn-delete">
+                                Supprimer
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        Aucun client trouvé
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
