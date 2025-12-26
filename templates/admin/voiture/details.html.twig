@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la voiture{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Détails de la voiture</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {% if voiture.image %}
+                <img src="{{ asset('uploads/' ~ voiture.image) }}" alt="Voiture" class="img-fluid">
+            {% else %}
+                <p>Aucune image disponible</p>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Marque :</strong> {{ voiture.marque }}</li>
+                <li class="list-group-item"><strong>Modèle :</strong> {{ voiture.modele }}</li>
+                <li class="list-group-item"><strong>Immatriculation :</strong> {{ voiture.immatriculation }}</li>
+                <li class="list-group-item"><strong>Prix journalier :</strong> {{ voiture.prixJournalier }} MAD</li>
+                <li class="list-group-item">
+                    <strong>Statut :</strong>
+                    {% if voiture.statut == 'Disponible' %}
+                        <span class="badge bg-success">{{ voiture.statut }}</span>
+                    {% elseif voiture.statut == 'Louée' %}
+                        <span class="badge bg-warning">{{ voiture.statut }}</span>
+                    {% else %}
+                        <span class="badge bg-danger">{{ voiture.statut }}</span>
+                    {% endif %}
+                </li>
+            </ul>
+            <a href="{{ path('admin_voitures') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

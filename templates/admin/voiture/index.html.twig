@@ -1,0 +1,144 @@
+{% extends 'base_admin.html.twig' %}
+{% block title %}Liste des voitures{% endblock %}
+
+{% block body %}
+<style>
+/* 🌙 Style sombre moderne */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #1b1f2a;
+    color: #e0e0e0;
+}
+
+h1 {
+    color: #00eaff;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+/* Bouton Ajouter */
+.btn-primary {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Table sombre */
+.table {
+    background: #2c2f3a;
+    border-radius: 12px;
+    overflow: hidden;
+    color: #e0e0e0;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.table thead {
+    background: #0072ff;
+    color: #fff;
+}
+
+.table tbody tr:hover {
+    background-color: #3a3f50;
+    transition: 0.3s;
+}
+
+/* Images */
+.table img {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Badges */
+.badge {
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 12px;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+.bg-warning {
+    background-color: #ffc107 !important;
+}
+.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Actions boutons */
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* Aucune voiture trouvée */
+.text-muted {
+    color: #aaa !important;
+}
+</style>
+
+<div class="container mt-4">
+    <h1>Liste des voitures</h1>
+    <a href="{{ path('admin_voiture_ajouter') }}" class="btn btn-primary mb-3">Ajouter une voiture</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Marque</th>
+                    <th>Modèle</th>
+                    <th>Immatriculation</th>
+                    <th>Prix journalier</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voiture in voitures %}
+                <tr>
+                    <td>
+                        {% if voiture.image %}
+                            <img src="{{ asset('uploads/' ~ voiture.image) }}" width="100" alt="Voiture">
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ voiture.marque }}</td>
+                    <td>{{ voiture.modele }}</td>
+                    <td>{{ voiture.immatriculation }}</td>
+                    <td>{{ voiture.prixJournalier }} MAD</td>
+                    <td>
+                        {% if voiture.statut == 'Disponible' %}
+                            <span class="badge bg-success">{{ voiture.statut }}</span>
+                        {% elseif voiture.statut == 'Louée' %}
+                            <span class="badge bg-warning">{{ voiture.statut }}</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ voiture.statut }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_voiture_details', {'id': voiture.id}) }}" class="btn btn-info btn-sm">Détails</a>
+                        <a href="{{ path('admin_voiture_modifier', {'id': voiture.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a href="{{ path('admin_voiture_supprimer', {'id': voiture.id}) }}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cette voiture ?');">Supprimer</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted">Aucune voiture trouvée</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

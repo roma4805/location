@@ -2,14 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Location Voitures{% endblock %}</title>
+    <title>{% block title %}Admin - Location Voitures{% endblock %}</title>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚙️</text></svg>">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- 🌟 STYLES GLOBAUX MODERNES -->
     {% block stylesheets %}
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
@@ -19,15 +18,15 @@
             background: #f4f6f9;
         }
 
-        /* 🔹 NAVBAR */
         .navbar {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .navbar-brand {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             letter-spacing: 1px;
+            color: #fff;
         }
 
         .nav-link {
@@ -43,7 +42,7 @@
             position: absolute;
             width: 0;
             height: 2px;
-            background: #00eaff;
+            background: #ffcc00;
             left: 0;
             bottom: -5px;
             transition: 0.3s;
@@ -53,12 +52,10 @@
             width: 100%;
         }
 
-        /* 🔹 PAGE WRAPPER */
         .page-wrapper {
             padding: 40px 0;
         }
 
-        /* 🔹 CARDS */
         .card {
             border: none;
             border-radius: 18px;
@@ -71,34 +68,31 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.12);
         }
 
-        /* 🔹 BOUTONS */
         .btn-primary {
-            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            background: linear-gradient(135deg, #ff9900, #ff6600);
             border: none;
             border-radius: 50px;
             padding: 10px 28px;
             font-weight: 600;
         }
 
-        /* 🔹 TABLES */
         .table {
             border-radius: 12px;
             overflow: hidden;
         }
 
         .table thead {
-            background: #2c5364;
+            background: #928dab;
             color: white;
         }
 
         .table tbody tr:hover {
-            background-color: #f0f4f8;
+            background-color: #e0e0e0;
             transition: 0.3s;
         }
 
-        /* 🔹 FOOTER */
         .footer {
-            background: #0f2027;
+            background: #1f1c2c;
             color: #aaa;
             padding: 25px 0;
             margin-top: 60px;
@@ -110,25 +104,19 @@
 
 <body>
 
-<!-- 🔹 NAVBAR -->
+<!-- NAVBAR ADMIN -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="#"> Location Voitures</a>
+        <a class="navbar-brand fw-bold" href="{{ path('admin_voitures') }}">Admin Location</a>
 
         <ul class="navbar-nav ms-auto">
-            {% if app.user is null %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('client_register') }}">Inscription</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Connexion</a></li>
-            {% else %}
-                <li class="nav-item"><a class="nav-link" href="{{ path('client_dashboard') }}">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('client_voitures') }}">Mes voitures</a></li>
-                <li class="nav-item"><a class="nav-link text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
-            {% endif %}
+            <li class="nav-item"><a class="nav-link" href="{{ path('admin_voitures') }}">Voitures</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ path('admin_clients_index') }}">Clients</a></li>
         </ul>
     </div>
 </nav>
 
-<!-- 🔹 CONTENU -->
+<!-- CONTENU -->
 {% block body %}{% endblock %}
 
 <!-- JS -->

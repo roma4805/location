@@ -22,11 +22,15 @@ class ClientRegistrationFormType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
             ])
+
+            // ⬇️ champs NON liés à l'entité Client
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'mapped' => false,
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
+                'mapped' => false,
                 'invalid_message' => 'Les mots de passe doivent correspondre.',
                 'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],

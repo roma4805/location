@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation confirmée{% endblock %}
+
+{% block body %}
+<style>
+/* 🌟 Page confirmation moderne */
+.confirmation-page {
+    background: #f4f6f9;
+    min-height: 100vh;
+    padding: 60px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.confirmation-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.alert-success h2 {
+    font-weight: 700;
+    color: #0072ff;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.card-body h4 {
+    font-weight: 700;
+    color: #0d1b2a;
+}
+
+.alert-info {
+    border-left: 5px solid #00bcd4;
+    border-radius: 12px;
+    font-size: 0.95rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: white;
+}
+</style>
+
+<div class="confirmation-page">
+    <div class="confirmation-container">
+
+        <div class="alert alert-success">
+            <h2>✅ Réservation effectuée avec succès</h2>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p><strong>Voiture :</strong> {{ contrat.voiture.marque }} {{ contrat.voiture.modele }}</p>
+                <p><strong>Date début :</strong> {{ contrat.dateDebut|date('d/m/Y') }}</p>
+                <p><strong>Date fin :</strong> {{ contrat.dateFin|date('d/m/Y') }}</p>
+
+                <hr>
+
+                <h4>💰 Prix total : 
+                    <span class="text-success">
+                        {{ prixTotal|number_format(2, ',', ' ') }} MAD
+                    </span>
+                </h4>
+
+                {% if messageReduction %}
+                    <div class="alert alert-info mt-3">
+                        {{ messageReduction }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="{{ path('client_voitures') }}" class="btn btn-primary">
+            Retour aux voitures
+        </a>
+
+    </div>
+</div>
+{% endblock %}

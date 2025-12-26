@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver {{ voiture.marque }} {{ voiture.modele }}{% endblock %}
+
+{% block body %}
+<style>
+/* 🌟 Page réservation moderne */
+.booking-page {
+    background: #f4f6f9;
+    min-height: 100vh;
+    padding: 50px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.booking-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.booking-container h1 {
+    font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #0d1b2a;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 12px;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #0072ff;
+    box-shadow: 0 0 8px rgba(0,114,255,0.2);
+    outline: none;
+}
+
+.btn-reserve {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-reserve:hover {
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: white;
+}
+
+.note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+    padding: 15px;
+    background: #e0f7fa;
+    border-radius: 12px;
+    border-left: 5px solid #00bcd4;
+}
+</style>
+
+<div class="booking-page">
+    <div class="booking-container">
+        <h1>Réserver {{ voiture.marque }} {{ voiture.modele }}</h1>
+
+        {{ form_start(form) }}
+
+<div class="form-group">
+    {{ form_row(form.dateDebut) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.dateFin) }}
+</div>
+
+{# Bouton personnalisé #}
+<button type="submit" class="btn-reserve">Réserver</button>
+
+{# Rend uniquement le reste des champs cachés (CSRF token, etc.) #}
+{{ form_rest(form) }}
+
+{{ form_end(form, {'render_rest': false}) }}
+
+
+
+        <div class="note">
+            ✨ Astuce : Réservez cette voiture pour plus d’un mois et profitez d’une remise spéciale !  
+            C’est le moment idéal pour planifier vos voyages en toute tranquillité. 🚗💨
+        </div>
+    </div>
+</div>
+{% endblock %}

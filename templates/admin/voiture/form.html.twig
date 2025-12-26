@@ -1,0 +1,53 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}{{ voiture is defined ? 'Modifier' : 'Ajouter' }} une voiture{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>{{ voiture is defined ? 'Modifier' : 'Ajouter' }} une voiture</h1>
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        <div class="mb-3">
+            {{ form_label(form.marque) }}
+            {{ form_widget(form.marque, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.marque) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.modele) }}
+            {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.modele) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.immatriculation) }}
+            {{ form_widget(form.immatriculation, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.immatriculation) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.prix_journalier) }}
+            {{ form_widget(form.prix_journalier, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prix_journalier) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.statut) }}
+            {{ form_widget(form.statut, {'attr': {'class': 'form-select'}}) }}
+            {{ form_errors(form.statut) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.image) }}
+            {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.image) }}
+            {% if voiture is defined and voiture.image %}
+                <img src="{{ asset('uploads/' ~ voiture.image) }}" alt="Voiture" width="150" class="mt-2">
+            {% endif %}
+        </div>
+
+        <button class="btn btn-success">{{ voiture is defined ? 'Modifier' : 'Ajouter' }}</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
+

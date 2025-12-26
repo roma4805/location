@@ -43,15 +43,15 @@ class ClientAuthenticator extends AbstractLoginFormAuthenticator
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+{
+    // Si l'utilisateur avait tenté d'accéder à une page protégée avant login
+    if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+        return new RedirectResponse($targetPath);
     }
+
+    // Sinon, redirige vers une route par défaut, par ex. le dashboard client
+    return new RedirectResponse($this->urlGenerator->generate('client_dashboard'));
+}
 
     protected function getLoginUrl(Request $request): string
     {

@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Voitures{% endblock %}
+
+{% block body %}
+<style>
+/* 🌟 Style moderne pour la page voitures */
+.page-wrapper {
+    padding: 40px 0;
+    background: #f4f6f9;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.section-title {
+    font-weight: 700;
+    font-size: 2.3rem;
+    color: #2c5364;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.car-card {
+    background: #ffffff;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    height: 100%;
+}
+
+.car-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+}
+
+.car-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.no-image {
+    height: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+}
+
+.car-card-body {
+    padding: 25px;
+}
+
+.car-card-body h5 {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.price {
+    color: #0072ff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.btn-reserver {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 50px;
+    padding: 12px;
+    font-weight: 600;
+    margin-top: 18px;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-reserver:hover {
+    background: linear-gradient(135deg, #0072ff, #00c6ff);
+    color: white;
+}
+
+.alert {
+    border-radius: 50px;
+    text-align: center;
+    font-weight: 500;
+}
+</style>
+
+<div class="page-wrapper">
+    <div class="container">
+
+        {# Flash messages #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success shadow-sm">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h1 class="section-title">🚗 Nos Voitures Disponibles</h1>
+
+        <div class="row g-4">
+            {% for voiture in voitures %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="car-card">
+                        {% if voiture.image %}
+                            <img src="{{ asset('uploads/' ~ voiture.image) }}" alt="Voiture">
+                        {% else %}
+                            <div class="no-image">🚘</div>
+                        {% endif %}
+
+                        <div class="car-card-body">
+                            <h5>{{ voiture.marque }} {{ voiture.modele }}</h5>
+                            <p>
+                                <strong>Immatriculation :</strong> {{ voiture.immatriculation }}<br>
+                                <strong>Prix / jour :</strong> <span class="price">{{ voiture.prixJournalier }} MAD</span>
+                            </p>
+                            <a href="{{ path('client_voiture_reservation', {'id': voiture.id}) }}" class="btn-reserver">
+                                Réserver maintenant
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">Aucune voiture disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

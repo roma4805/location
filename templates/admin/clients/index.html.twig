@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block body %}
 <style>
@@ -124,12 +124,7 @@
 </style>
 
 <div class="clients-page">
-    <div class="clients-header">
-        <h1>Clients</h1>
-        <a href="{{ path('admin_clients_new') }}" class="btn-add">
-            + Ajouter un client
-        </a>
-    </div>
+
 
     <div class="clients-card">
         <table class="table">
@@ -142,37 +137,38 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-            {% for client in clients %}
-                <tr>
-                    <td>{{ client.id }}</td>
-                    <td>{{ client.firstName }}</td>
-                    <td>{{ client.lastName }}</td>
-                    <td>{{ client.email }}</td>
-                    <td>
-                        <a href="{{ path('admin_clients_edit', {'id': client.id}) }}" class="btn-edit">
-                            Modifier
-                        </a>
+           <tbody>
+{% for client in clients %}
+    <tr>
+        <td>{{ client.id }}</td>
+        <td>{{ client.firstName }}</td>
+        <td>{{ client.lastName }}</td>
+        <td>{{ client.user ? client.user.email : '' }}</td>
+        <td>
+            <a href="{{ path('admin_clients_edit', {'id': client.id}) }}" class="btn-edit">
+                Modifier
+            </a>
 
-                        <form method="post"
-                              action="{{ path('admin_clients_delete', {'id': client.id}) }}"
-                              style="display:inline-block;"
-                              onsubmit="return confirm('Supprimer ce client ?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
-                            <button class="btn-delete">
-                                Supprimer
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5" class="text-center text-muted">
-                        Aucun client trouvé
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
+            <form method="post"
+                  action="{{ path('admin_clients_delete', {'id': client.id}) }}"
+                  style="display:inline-block;"
+                  onsubmit="return confirm('Supprimer ce client ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                <button class="btn-delete">
+                    Supprimer
+                </button>
+            </form>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="5" class="text-center text-muted">
+            Aucun client trouvé
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+
         </table>
     </div>
 </div>

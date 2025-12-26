@@ -1,59 +1,182 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon Dashboard{% endblock %}
+{% block title %}Dashboard Client{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Bonjour {{ client.firstName }} {{ client.lastName }}</h1>
+<style>
+/* 🌌 Palette sombre et moderne */
+:root {
+    --primary: #0d1b2a;
+    --secondary: #1b263b;
+    --accent: #00d4ff;
+    --light: #f8f9fa;
+}
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
+/* Page */
+.dashboard-client {
+    background: linear-gradient(135deg, #0d1b2a, #1b263b);
+    min-height: 100vh;
+    padding: 50px 0;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
 
-    <div class="card">
-        <div class="card-header">
-            Modifier mes informations
-        </div>
-        <div class="card-body">
-            {{ form_start(form) }}
-                <div class="mb-3">
-                    {{ form_label(form.email) }}
-                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.email) }}
+/* Titres */
+.dashboard-title {
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--accent);
+    margin-bottom: 40px;
+}
+
+/* Sections */
+.section-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Section titres */
+.section-title {
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 5px;
+}
+
+/* Infos client */
+.info-list li {
+    padding: 12px 0;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Tableau */
+.table thead {
+    background: rgba(0,212,255,0.8);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.table tbody tr {
+    transition: background 0.3s;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Image voiture */
+.car-img {
+    width: 100px;
+    border-radius: 10px;
+}
+
+/* Badge statut */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-dispo {
+    background: #28a745;
+    color: white;
+}
+
+.badge-indispo {
+    background: #dc3545;
+    color: white;
+}
+
+/* Message vide */
+.empty-msg {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #ccc;
+    font-style: italic;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .dashboard-title { font-size: 28px; }
+}
+</style>
+
+<div class="dashboard-client">
+    <div class="container">
+        <h1 class="dashboard-title">👋 Bonjour {{ client.firstName }} {{ client.lastName }}</h1>
+
+        <div class="row g-4">
+            <!-- Données personnelles -->
+            <div class="col-lg-4">
+                <div class="section-card">
+                    <h5 class="section-title">Informations du compte</h5>
+                    <ul class="list-unstyled info-list">
+                        <li><strong>Email :</strong> {{ client.user.email }}</li>
+                        <li><strong>Date d'inscription :</strong> {{ client.createdAt|date('d/m/Y') }}</li>
+                    </ul>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    {{ form_label(form.password) }}
-                    {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Laisser vide si inchangé'}}) }}
-                    {{ form_errors(form.password) }}
+            <!-- Historique des réservations -->
+            <div class="col-lg-8">
+                <div class="section-card">
+                    <h5 class="section-title">Historique des réservations</h5>
+
+                    {% if reservations is empty %}
+                        <div class="empty-msg">
+                            🚗 Vous n'avez aucune réservation pour le moment.
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Voiture</th>
+                                        <th>Image</th>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Prix total</th>
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for contrat in reservations %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ contrat.voiture.marque }}</strong><br>
+                                            <small>{{ contrat.voiture.modele }}</small>
+                                        </td>
+                                        <td>
+    {% if contrat.voiture.image %}
+        <img src="{{ asset('uploads/voitures/' ~ contrat.voiture.image) }}" class="car-img" alt="{{ contrat.voiture.marque }}">
+    {% else %}
+        <span class="text-muted">Aucune image</span>
+    {% endif %}
+</td>
+
+                                        <td>{{ contrat.dateDebut|date('d/m/Y') }}</td>
+                                        <td>{{ contrat.dateFin|date('d/m/Y') }}</td>
+                                        <td><strong>{{ contrat.prixTotal }} MAD</strong></td>
+    
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="mb-3">
-    {{ form_label(form.currentPassword) }}
-    {{ form_widget(form.currentPassword, {'attr': {'class': 'form-control'}}) }}
-    {{ form_errors(form.currentPassword) }}
-</div>
+            </div>
 
-<div class="mb-3">
-    {{ form_label(form.newPassword) }}
-    {{ form_widget(form.newPassword, {'attr': {'class': 'form-control'}}) }}
-    {{ form_errors(form.newPassword) }}
-</div>
-
-
-                <div class="mb-3">
-                    {{ form_label(form.firstName) }}
-                    {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.firstName) }}
-                </div>
-
-                <div class="mb-3">
-                    {{ form_label(form.lastName) }}
-                    {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.lastName) }}
-                </div>
-
-                <button type="submit" class="btn btn-primary">Mettre à jour</button>
-            {{ form_end(form) }}
         </div>
     </div>
 </div>

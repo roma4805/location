@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Location de voitures – Accueil{% endblock %}
+
+{% block body %}
+
+<style>
+/* ===== HERO SECTION ===== */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('https://images.unsplash.com/photo-1549924231-f129b911e442') center/cover no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* ===== BUTTON ===== */
+.btn-main {
+    background: #ffb703;
+    color: #000;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 30px;
+}
+
+.btn-main:hover {
+    background: #ffaa00;
+}
+
+/* ===== CAR CARD ===== */
+.car-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.car-card img {
+    height: 220px;
+    object-fit: cover;
+}
+
+/* ===== SECTION ===== */
+.section-title {
+    font-weight: 700;
+    margin-bottom: 50px;
+}
+
+/* ===== FEATURES ===== */
+.feature-icon {
+    font-size: 40px;
+    color: #ffb703;
+}
+</style>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="container text-center">
+        <h1>Location de voitures premium</h1>
+        <p class="my-4">Des voitures modernes, confortables et au meilleur prix</p>
+        <a href="#" class="btn btn-main">Réserver maintenant</a>
+    </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="feature-icon mb-3">🚗</div>
+                <h5>Large choix</h5>
+                <p>Citadines, SUV, berlines et voitures de luxe</p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon mb-3">💰</div>
+                <h5>Prix compétitifs</h5>
+                <p>Les meilleurs tarifs adaptés à votre budget</p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon mb-3">📞</div>
+                <h5>Support 24/7</h5>
+                <p>Assistance rapide et efficace à tout moment</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CARS ===== -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center section-title">Nos voitures populaires</h2>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card car-card">
+                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" class="card-img-top">
+                    <div class="card-body text-center">
+                        <h5>BMW Série 3</h5>
+                        <p class="text-muted">À partir de 80€/jour</p>
+                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card car-card">
+                    <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c4" class="card-img-top">
+                    <div class="card-body text-center">
+                        <h5>Mercedes Classe C</h5>
+                        <p class="text-muted">À partir de 90€/jour</p>
+                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card car-card">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d" class="card-img-top">
+                    <div class="card-body text-center">
+                        <h5>Audi A4</h5>
+                        <p class="text-muted">À partir de 85€/jour</p>
+                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="py-5 bg-dark text-white text-center">
+    <div class="container">
+        <h2>Prêt à prendre la route ?</h2>
+        <p class="my-3">Réservez votre voiture en quelques clics</p>
+        <a href="#" class="btn btn-main">Commencer</a>
+    </div>
+</section>
+
+{% endblock %}
