@@ -1,0 +1,152 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Clients avec réservations{% endblock %}
+
+{% block body %}
+<style>
+/* 🌑 Page Clients - Style moderne */
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e63946;
+    margin-bottom: 30px;
+}
+
+/* Card container */
+.card-admin {
+    background: #161a2e;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+
+/* 🔥 FORCER LE TABLEAU EN DARK */
+.table-responsive {
+    background: #161a2e;
+    border-radius: 16px;
+}
+
+.table {
+    background-color: #161a2e !important;
+    color: #e5e7eb;
+}
+
+.table thead {
+    background-color: #1f243d !important;
+}
+
+.table tbody {
+    background-color: #161a2e !important;
+}
+
+.table td,
+.table th {
+    background-color: transparent !important;
+    color: #e5e7eb;
+}
+
+/* Hover moderne */
+.table tbody tr:hover {
+    background-color: rgba(230,57,70,0.12) !important;
+}
+
+/* Supprimer effets Bootstrap */
+.table-hover > tbody > tr:hover > * {
+    color: #ffffff;
+}
+
+
+/* Client name */
+.client-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Email */
+.client-email {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Infos secondaires */
+.text-muted-custom {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Badge réservations */
+.badge-reservations {
+    background: linear-gradient(135deg, #e63946, #9b1c1c);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 60px 0;
+    color: #9ca3af;
+}
+</style>
+
+<div class="container mt-4">
+
+    <h1 class="page-title">👥 Clients avec réservations</h1>
+
+    {% if clients is empty %}
+        <div class="empty-state">
+            <p>Aucun client n'a encore passé de réservation.</p>
+        </div>
+    {% else %}
+        <div class="card-admin">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Email</th>
+                            <th>CIN</th>
+                            <th>Téléphone</th>
+                            <th>Inscription</th>
+                            <th>Réservations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td class="client-name">
+                                {{ client.firstName }} {{ client.lastName }}
+                            </td>
+
+                            <td class="client-email">
+                                {{ client.user.email }}
+                            </td>
+
+                            <td class="text-muted-custom">
+                                {{ client.cin ?: 'Non renseigné' }}
+                            </td>
+
+                            <td class="text-muted-custom">
+                                {{ client.phone ?: 'Non renseigné' }}
+                            </td>
+
+                            <td class="text-muted-custom">
+                                {{ client.createdAt|date('d/m/Y') }}
+                            </td>
+
+                            <td>
+                                <span class="badge-reservations">
+                                    {{ client.contrats|length }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -23,7 +23,21 @@ class ClientRegistrationFormType extends AbstractType
                 'label' => 'Nom',
             ])
 
-            // ⬇️ champs NON liés à l'entité Client
+            // ✅ Champs LIÉS à Client
+            ->add('cin', TextType::class, [
+                'label' => 'CIN',
+                'attr' => [
+                    'placeholder' => 'Ex : AB123456'
+                ],
+            ])
+            ->add('phone', TextType::class, [
+                'label' => 'Téléphone',
+                'attr' => [
+                    'placeholder' => '+212 6XX XXX XXX'
+                ],
+            ])
+
+            // ⬇️ Champs NON liés à Client
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'mapped' => false,

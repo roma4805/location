@@ -3,94 +3,129 @@
 
 {% block body %}
 <style>
-/* 🌙 Style sombre moderne */
+/* 🌙 Style sombre avec accent rouge */
 body {
     font-family: 'Poppins', sans-serif;
-    background: #1b1f2a;
-    color: #e0e0e0;
+
+    color: #e5e7eb;
 }
 
+/* Titre */
 h1 {
-    color: #00eaff;
+    color: #e63946;
     margin-bottom: 30px;
     font-weight: 700;
 }
 
 /* Bouton Ajouter */
 .btn-primary {
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #e63946, #9b1c1c);
     border: none;
     border-radius: 50px;
-    padding: 10px 20px;
+    padding: 10px 22px;
     font-weight: 600;
     color: #fff;
+    box-shadow: 0 8px 20px rgba(230,57,70,0.3);
 }
 
 .btn-primary:hover {
-    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(230,57,70,0.45);
 }
 
 /* Table sombre */
 .table {
-    background: #2c2f3a;
-    border-radius: 12px;
+    background: #161a2e;
+    border-radius: 14px;
     overflow: hidden;
-    color: #e0e0e0;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    color: #e5e7eb;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.45);
 }
 
 .table thead {
-    background: #0072ff;
+    background: #1f243d;
     color: #fff;
 }
 
+.table thead th {
+    border: none;
+    font-weight: 600;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
 .table tbody tr:hover {
-    background-color: #3a3f50;
-    transition: 0.3s;
+    background-color: rgba(230,57,70,0.08);
+    transition: 0.3s ease;
 }
 
 /* Images */
 .table img {
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
 }
 
 /* Badges */
 .badge {
     font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
 }
 
 .bg-success {
-    background-color: #28a745 !important;
+    background-color: #2ecc71 !important;
 }
+
 .bg-warning {
-    background-color: #ffc107 !important;
+    background-color: #f1c40f !important;
+    color: #000;
 }
+
 .bg-danger {
-    background-color: #dc3545 !important;
+    background-color: #e63946 !important;
 }
 
-/* Actions boutons */
+/* Boutons actions */
 .btn-sm {
-    font-size: 0.8rem;
-    padding: 4px 10px;
-    border-radius: 8px;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 10px;
 }
 
-/* Aucune voiture trouvée */
+.btn-info {
+    background: #3a86ff;
+    border: none;
+    color: #fff;
+}
+
+.btn-warning {
+    background: #ffbe0b;
+    border: none;
+    color: #000;
+}
+
+.btn-danger {
+    background: #e63946;
+    border: none;
+}
+
+/* Aucun résultat */
 .text-muted {
-    color: #aaa !important;
+    color: #9ca3af !important;
 }
 </style>
 
 <div class="container mt-4">
-    <h1>Liste des voitures</h1>
-    <a href="{{ path('admin_voiture_ajouter') }}" class="btn btn-primary mb-3">Ajouter une voiture</a>
+    <h1> Liste des voitures</h1>
+
+    <a href="{{ path('admin_voiture_ajouter') }}" class="btn btn-primary mb-4">
+        + Ajouter une voiture
+    </a>
 
     <div class="table-responsive">
-        <table class="table table-striped align-middle">
+        <table class="table align-middle">
             <thead>
                 <tr>
                     <th>Image</th>
@@ -107,7 +142,7 @@ h1 {
                 <tr>
                     <td>
                         {% if voiture.image %}
-                            <img src="{{ asset('uploads/' ~ voiture.image) }}" width="100" alt="Voiture">
+                            <img src="{{ asset('uploads/' ~ voiture.image) }}" width="100">
                         {% else %}
                             N/A
                         {% endif %}
@@ -115,7 +150,7 @@ h1 {
                     <td>{{ voiture.marque }}</td>
                     <td>{{ voiture.modele }}</td>
                     <td>{{ voiture.immatriculation }}</td>
-                    <td>{{ voiture.prixJournalier }} MAD</td>
+                    <td><strong>{{ voiture.prixJournalier }} MAD</strong></td>
                     <td>
                         {% if voiture.statut == 'Disponible' %}
                             <span class="badge bg-success">{{ voiture.statut }}</span>
@@ -128,13 +163,18 @@ h1 {
                     <td>
                         <a href="{{ path('admin_voiture_details', {'id': voiture.id}) }}" class="btn btn-info btn-sm">Détails</a>
                         <a href="{{ path('admin_voiture_modifier', {'id': voiture.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
-                        <a href="{{ path('admin_voiture_supprimer', {'id': voiture.id}) }}" class="btn btn-danger btn-sm"
-                           onclick="return confirm('Voulez-vous vraiment supprimer cette voiture ?');">Supprimer</a>
+                        <a href="{{ path('admin_voiture_supprimer', {'id': voiture.id}) }}" 
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Voulez-vous vraiment supprimer cette voiture ?');">
+                           Supprimer
+                        </a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="7" class="text-center text-muted">Aucune voiture trouvée</td>
+                    <td colspan="7" class="text-center text-muted">
+                        Aucune voiture trouvée
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

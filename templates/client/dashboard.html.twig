@@ -4,108 +4,186 @@
 
 {% block body %}
 <style>
-/* 🌌 Palette sombre et moderne */
+/* 🌌 Palette sombre moderne avec rouge dégradé */
 :root {
-    --primary: #0d1b2a;
-    --secondary: #1b263b;
-    --accent: #00d4ff;
-    --light: #f8f9fa;
+    --bg-main: #0b1220;
+    --bg-section: #0f1b2d;
+    --bg-card: #13233a;
+    --primary: #3b82f6;
+   --accent-gradient: linear-gradient(135deg, #b91c1c, #ef4444, #fb7185);
+
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
 }
 
-/* Page */
+/* ===== PAGE ===== */
 .dashboard-client {
-    background: linear-gradient(135deg, #0d1b2a, #1b263b);
+    background: linear-gradient(135deg, var(--bg-main), var(--bg-section));
     min-height: 100vh;
     padding: 50px 0;
-    color: white;
+    color: var(--text-main);
     font-family: 'Poppins', sans-serif;
 }
 
-/* Titres */
+/* ===== TITRE ===== */
 .dashboard-title {
-    font-weight: 700;
-    font-size: 32px;
-    color: var(--accent);
-    margin-bottom: 40px;
+    font-weight: 800;
+    font-size: 38px;
+    margin-bottom: 35px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Sections */
+.dashboard-title::before {
+    content: "🚀";
+    font-size: 40px;
+}
+
+/* ===== SECTIONS ===== */
 .section-card {
     background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border-radius: 20px;
     padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.section-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
-/* Section titres */
+/* ===== TITRES SECTIONS ===== */
 .section-title {
-    font-weight: 600;
-    font-size: 20px;
-    color: var(--accent);
+    font-weight: 700;
+    font-size: 22px;
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding-bottom: 5px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    padding-bottom: 8px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Infos client */
+/* ===== INFOS CLIENT ===== */
 .info-list li {
     padding: 12px 0;
     font-size: 16px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.info-list li i {
+    color: #ef4444;
 }
 
-/* Tableau */
+/* ===== TABLEAU ===== */
+/* ===== TABLEAU SOMBRE PREMIUM ===== */
+.table,
+.table th,
+.table td {
+    background: transparent !important; /* supprime tout blanc Bootstrap */
+    color: var(--text-main) !important;
+    border: none !important;
+}
+
+/* En-tête */
 .table thead {
-    background: rgba(0,212,255,0.8);
-    color: var(--primary);
-    font-weight: 600;
+    background: linear-gradient(135deg, #991b1b, #ef4444);
+    color: #fff;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
 }
 
+.table thead th {
+    padding: 16px;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+/* Corps des lignes */
 .table tbody tr {
-    transition: background 0.3s;
+    background: rgba(255,255,255,0.03); /* très léger pour voir les lignes */
+    transition: background 0.3s, transform 0.2s;
 }
 
 .table tbody tr:hover {
-    background-color: rgba(255,255,255,0.1);
+    background: rgba(239,68,68,0.25);
+    transform: scale(1.01);
 }
 
-/* Image voiture */
+.table tbody td {
+    padding: 16px;
+    color: #e5e7eb;
+}
+
+/* Texte secondaire */
+.table small {
+    color: var(--text-muted);
+}
+
+/* Responsivité (optionnel) */
+.table-responsive {
+    background: transparent !important;
+}
+
+/* ===== IMAGE VOITURE ===== */
 .car-img {
     width: 100px;
-    border-radius: 10px;
+    border-radius: 12px;
 }
 
-/* Badge statut */
+/* ===== BADGE STATUT ===== */
 .badge-status {
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
 }
-
 .badge-dispo {
-    background: #28a745;
+    background: #22c55e;
     color: white;
 }
-
 .badge-indispo {
-    background: #dc3545;
+    background: var(--accent-gradient);
     color: white;
 }
 
-/* Message vide */
+/* ===== MESSAGE VIDE ===== */
 .empty-msg {
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 15px;
     text-align: center;
-    color: #ccc;
+    color: var(--text-muted);
     font-style: italic;
+    font-size: 16px;
 }
 
-/* Responsive */
+/* ===== ICONES PROFESSIONNELLES ===== */
+.section-icon {
+    font-size: 24px;
+    color: var(--primary);
+    margin-right: 8px;
+}
+
+/* ===== BOUTONS ===== */
+.btn-main {
+    background: var(--accent-gradient);
+    color: white;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 50px;
+    transition: all 0.3s;
+}
+.btn-main:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:768px){
     .dashboard-title { font-size: 28px; }
 }
@@ -113,32 +191,42 @@
 
 <div class="dashboard-client">
     <div class="container">
-        <h1 class="dashboard-title">👋 Bonjour {{ client.firstName }} {{ client.lastName }}</h1>
+        <!-- ===== BIENVENUE ===== -->
+        <h1 class="dashboard-title">
+            <i class="fas fa-car-side"></i> Bonjour {{ client.firstName }} {{ client.lastName }}
+        </h1>
+        <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">
+            Bienvenue sur votre espace premium ! Découvrez vos réservations et vos véhicules préférés.
+        </p>
 
         <div class="row g-4">
+
             <!-- Données personnelles -->
             <div class="col-lg-4">
                 <div class="section-card">
-                    <h5 class="section-title">Informations du compte</h5>
-                    <ul class="list-unstyled info-list">
-                        <li><strong>Email :</strong> {{ client.user.email }}</li>
-                        <li><strong>Date d'inscription :</strong> {{ client.createdAt|date('d/m/Y') }}</li>
-                    </ul>
+                    <h5 class="section-title"><i class="fas fa-user section-icon"></i> Informations du compte</h5>
+                   <ul class="list-unstyled info-list">
+    <li><i class="fas fa-envelope"></i> <strong>Email :</strong> {{ client.user.email }}</li>
+    <li><i class="fas fa-id-card"></i> <strong>CIN :</strong> {{ client.cin ? client.cin : 'Non renseigné' }}</li>
+    <li><i class="fas fa-phone"></i> <strong>Téléphone :</strong> {{ client.phone ? client.phone : 'Non renseigné' }}</li>
+    <li><i class="fas fa-calendar-alt"></i> <strong>Date d'inscription :</strong> {{ client.createdAt|date('d/m/Y') }}</li>
+</ul>
+
                 </div>
             </div>
 
             <!-- Historique des réservations -->
             <div class="col-lg-8">
                 <div class="section-card">
-                    <h5 class="section-title">Historique des réservations</h5>
+                    <h5 class="section-title"><i class="fas fa-history section-icon"></i> Historique des réservations</h5>
 
                     {% if reservations is empty %}
                         <div class="empty-msg">
-                            🚗 Vous n'avez aucune réservation pour le moment.
+                            <i class="fas fa-car"></i> Vous n'avez aucune réservation pour le moment.
                         </div>
                     {% else %}
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle">
+                           <table class="table table-hover align-middle">
                                 <thead>
                                     <tr>
                                         <th>Voiture</th>
@@ -146,7 +234,6 @@
                                         <th>Date début</th>
                                         <th>Date fin</th>
                                         <th>Prix total</th>
-                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -157,27 +244,29 @@
                                             <small>{{ contrat.voiture.modele }}</small>
                                         </td>
                                         <td>
-    {% if contrat.voiture.image %}
-        <img src="{{ asset('uploads/voitures/' ~ contrat.voiture.image) }}" class="car-img" alt="{{ contrat.voiture.marque }}">
-    {% else %}
-        <span class="text-muted">Aucune image</span>
-    {% endif %}
-</td>
-
+                                            {% if contrat.voiture.image %}
+                                                <img src="{{ asset('uploads/' ~ contrat.voiture.image) }}" class="car-img" alt="{{ contrat.voiture.marque }}">
+                                            {% else %}
+                                                <span class="text-muted">Aucune image</span>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ contrat.dateDebut|date('d/m/Y') }}</td>
                                         <td>{{ contrat.dateFin|date('d/m/Y') }}</td>
                                         <td><strong>{{ contrat.prixTotal }} MAD</strong></td>
-    
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     {% endif %}
+
                 </div>
             </div>
 
         </div>
     </div>
 </div>
+
+<!-- ===== FONT AWESOME ===== -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p0GQH4WZ5vKk+q75h9ibH3o+q2vPZlhK4HfM7IhN4lWz2Bd0H0mDFzJ+6y4+Tk0hI5f1f+QYkbQdWQwFhg2/ew==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}

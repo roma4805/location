@@ -90,15 +90,35 @@ class AdminClientController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'admin_clients_delete', methods: ['POST'])]
-    public function delete(Client $client, Request $request): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
-            $this->em->remove($client->getUser());
-            $this->em->remove($client);
-            $this->em->flush();
-            $this->addFlash('success', 'Client supprimé avec succès.');
-        }
-
+public function delete(Client $client, EntityManagerInterface $em, Request $request): Response
+{
+    if (count($client->getContrats()) > 0) {
+        $this->addFlash('danger', 'Impossible de supprimer ce client : des contrats existent.');
         return $this->redirectToRoute('admin_clients_index');
     }
+
+    $em->remove($client);
+    $em->flush();
+
+    $this->addFlash('success', 'Client supprimé avec succès.');
+    return $this->redirectToRoute('admin_clients_index');
+}
+
+
+#[Route('/reservations', name: 'admin_clients_reservations')]
+public function clientsAvecReservations(): Response
+{
+    // Récupérer les clients qui ont au moins un contrat
+    $clients = $this->em->getRepository(Client::class)
+        ->createQueryBuilder('c')
+        ->innerJoin('c.contrats', 'co')  // inner join = au moins un contrat
+        ->addSelect('co')
+        ->getQuery()
+        ->getResult();
+
+    return $this->render('admin/clients/reservations.html.twig', [
+        'clients' => $clients,
+    ]);
+}
+
 }

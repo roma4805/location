@@ -4,34 +4,48 @@
 
 {% block body %}
 <style>
-/* 🌟 Style moderne pour la page voitures */
-.page-wrapper {
-    padding: 40px 0;
-    background: #f4f6f9;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
+/* 🌌 Palette sombre avec rouge dégradé */
+:root {
+    --bg-main: #0b1220; /* fond général sombre */
+    --bg-section: #131b2c; /* cartes */
+    --accent-gradient: linear-gradient(135deg, #b91c1c, #ef4444, #fb7185); /* rouge chaud et moderne */
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
 }
 
+/* ===== PAGE ===== */
+.page-wrapper {
+    padding: 40px 0;
+    background: var(--bg-main);
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-main);
+}
+
+/* ===== TITRE ===== */
 .section-title {
     font-weight: 700;
     font-size: 2.3rem;
-    color: #2c5364;
     text-align: center;
     margin-bottom: 40px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+/* ===== CARDS ===== */
 .car-card {
-    background: #ffffff;
+    background: var(--bg-section);
     border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     height: 100%;
 }
 
 .car-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
 }
 
 .car-card img {
@@ -46,9 +60,11 @@
     align-items: center;
     justify-content: center;
     font-size: 4rem;
-    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+    background: linear-gradient(135deg, #3b0000, #7f1d1d); /* rouge sombre pour placeholder */
+    color: #fff;
 }
 
+/* ===== CAR CARD BODY ===== */
 .car-card-body {
     padding: 25px;
 }
@@ -56,79 +72,116 @@
 .car-card-body h5 {
     font-weight: 600;
     margin-bottom: 12px;
+    color: var(--text-main);
 }
 
 .price {
-    color: #0072ff;
+    color: #ef4444; /* rouge vif pour attirer l’œil */
     font-weight: 700;
     font-size: 1.1rem;
 }
 
+/* ===== BOUTON RÉSERVER ===== */
 .btn-reserver {
     display: block;
     width: 100%;
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    background: var(--accent-gradient);
     color: white;
     border-radius: 50px;
     padding: 12px;
     font-weight: 600;
     margin-top: 18px;
-    transition: all 0.3s ease;
     text-align: center;
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .btn-reserver:hover {
-    background: linear-gradient(135deg, #0072ff, #00c6ff);
-    color: white;
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
+/* ===== ALERTS ===== */
 .alert {
     border-radius: 50px;
     text-align: center;
     font-weight: 500;
 }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
 </style>
 
 <div class="page-wrapper">
-    <div class="container">
+<div class="container">
 
-        {# Flash messages #}
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success shadow-sm">
-                {{ message }}
-            </div>
-        {% endfor %}
+    {# Flash messages #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success shadow-sm">
+            {{ message }}
+        </div>
+    {% endfor %}
 
-        <h1 class="section-title">🚗 Nos Voitures Disponibles</h1>
+    <h1 class="section-title">Nos Voitures Disponibles</h1>
 
-        <div class="row g-4">
-            {% for voiture in voitures %}
-                <div class="col-lg-4 col-md-6">
-                    <div class="car-card">
-                        {% if voiture.image %}
-                            <img src="{{ asset('uploads/' ~ voiture.image) }}" alt="Voiture">
-                        {% else %}
-                            <div class="no-image">🚘</div>
-                        {% endif %}
+    <!-- Barre de recherche -->
+    <div style="text-align:center; margin-bottom:30px;">
+        <input type="text" id="searchInput" placeholder="Rechercher une voiture..." 
+               style="padding:12px 20px; width:60%; border-radius:50px; border:none; outline:none; font-size:16px;">
+    </div>
 
-                        <div class="car-card-body">
-                            <h5>{{ voiture.marque }} {{ voiture.modele }}</h5>
-                            <p>
-                                <strong>Immatriculation :</strong> {{ voiture.immatriculation }}<br>
-                                <strong>Prix / jour :</strong> <span class="price">{{ voiture.prixJournalier }} MAD</span>
-                            </p>
-                            <a href="{{ path('client_voiture_reservation', {'id': voiture.id}) }}" class="btn-reserver">
-                                Réserver maintenant
-                            </a>
-                        </div>
+    <div class="row g-4" id="carsContainer">
+        {% for voiture in voitures %}
+            <div class="col-lg-4 col-md-6 car-item">
+                <div class="car-card">
+                    {% if voiture.image %}
+                        <img src="{{ asset('uploads/' ~ voiture.image) }}" alt="Voiture">
+                    {% else %}
+                        <div class="no-image">🚘</div>
+                    {% endif %}
+
+                    <div class="car-card-body">
+                        <h5>{{ voiture.marque }} {{ voiture.modele }}</h5>
+                        <p>
+                            <strong>Immatriculation :</strong> {{ voiture.immatriculation }}<br>
+                            <strong>Prix / jour :</strong> <span class="price">{{ voiture.prixJournalier }} MAD</span>
+                        </p>
+                        <a href="{{ path('client_voiture_reservation', {'id': voiture.id}) }}" class="btn-reserver">
+                            Réserver maintenant
+                        </a>
                     </div>
                 </div>
-            {% else %}
-                <p class="text-center text-muted">Aucune voiture disponible pour le moment.</p>
-            {% endfor %}
-        </div>
-
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Aucune voiture disponible pour le moment.</p>
+        {% endfor %}
     </div>
 </div>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('searchInput');
+    const carItems = document.querySelectorAll('.car-item');
+
+    searchInput.addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+
+        carItems.forEach(item => {
+            const title = item.querySelector('h5').textContent.toLowerCase();
+            if(title.includes(filter)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
 {% endblock %}

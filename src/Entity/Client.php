@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
+use App\Entity\Contrat;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
@@ -16,25 +18,35 @@ class Client
     #[ORM\Column(type: "integer")]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     private ?string $firstName = null;
 
-    #[ORM\Column(type: "string", length: 255)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     private ?string $lastName = null;
 
     #[ORM\Column(type: "datetime")]
     private \DateTimeInterface $createdAt;
 
+   // ✅ NOUVEAUX CHAMPS (TEMPORAIRE)
+#[ORM\Column(length: 20, unique: true, nullable: true)]
+private ?string $cin = null;
 
+#[ORM\Column(length: 20)]
+#[Assert\NotBlank]
+#[Assert\Regex(
+    pattern: "/^[0-9+\s]+$/",
+    message: "Numéro de téléphone invalide"
+)]
+private ?string $phone = null;
 
     // 🔗 Relation avec User
     #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    // 🔗 Relation avec Contrat (IMPORTANT)
+    // 🔗 Relation avec Contrat
     #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contrat::class)]
     private Collection $contrats;
 
@@ -78,7 +90,27 @@ class Client
         return $this->createdAt;
     }
 
- 
+    public function getCin(): ?string
+    {
+        return $this->cin;
+    }
+
+    public function setCin(string $cin): self
+    {
+        $this->cin = $cin;
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
 
     public function getUser(): ?User
     {
@@ -91,7 +123,6 @@ class Client
         return $this;
     }
 
-    // ✅ MÉTHODES CRUCIALES POUR TON PROBLÈME
     public function getContrats(): Collection
     {
         return $this->contrats;
@@ -103,7 +134,6 @@ class Client
             $this->contrats[] = $contrat;
             $contrat->setClient($this);
         }
-
         return $this;
     }
 
@@ -114,7 +144,6 @@ class Client
                 $contrat->setClient(null);
             }
         }
-
         return $this;
     }
 }

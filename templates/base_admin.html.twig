@@ -13,10 +13,12 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f4f6f9;
-        }
+       body {
+    font-family: 'Poppins', sans-serif;
+    background: #0f1220;
+    color: #e5e7eb;
+}
+
 
         .navbar {
             background: linear-gradient(135deg, #1f1c2c, #928dab);
@@ -98,6 +100,17 @@
             margin-top: 60px;
             text-align: center;
         }
+        html, body {
+    background-color: #0f1220 !important;
+    min-height: 100%;
+}
+
+.container,
+.container-fluid,
+.page-wrapper {
+    background: transparent !important;
+}
+
     </style>
     {% endblock %}
 </head>
@@ -109,12 +122,28 @@
     <div class="container">
         <a class="navbar-brand fw-bold" href="{{ path('admin_voitures') }}">Admin Location</a>
 
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_voitures') }}">Voitures</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ path('admin_clients_index') }}">Clients</a></li>
+        <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_voitures') }}">Voitures</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('admin_clients_index') }}">Clients</a>
+            </li>
+            <!-- 🔔 Notification réservations -->
+            <li class="nav-item position-relative">
+                <a class="nav-link" href="{{ path('admin_clients_reservations') }}">
+                    <i class="bi bi-bell"></i> Réservations
+                    {% if reservationsCount is defined and reservationsCount > 0 %}
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                            {{ reservationsCount }}
+                        </span>
+                    {% endif %}
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
+
 
 <!-- CONTENU -->
 {% block body %}{% endblock %}

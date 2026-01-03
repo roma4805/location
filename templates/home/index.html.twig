@@ -1,154 +1,299 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Location de voitures – Accueil{% endblock %}
+{% block title %}Location de voitures – Premium{% endblock %}
 
 {% block body %}
 
 <style>
-/* ===== HERO SECTION ===== */
+/* ================= GLOBAL ================= */
+/* ================= GLOBAL ================= */
+:root {
+    --bg-main: #0b1220;
+    --bg-section: #0f1b2d;
+    --bg-card: #13233a;
+
+    --primary: #3b82f6;      /* Bleu principal */
+    --accent-red: #e11d48;   /* Rouge premium (léger) */
+
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
+}
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* ================= HERO ================= */
 .hero {
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-    url('https://images.unsplash.com/photo-1549924231-f129b911e442') center/cover no-repeat;
-    min-height: 100vh;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-main);
+}
+
+.hero video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
     display: flex;
     align-items: center;
-    color: white;
+    text-align: center;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
+    font-size: 4rem;
+    font-weight: 800;
 }
 
 .hero p {
-    font-size: 1.2rem;
-    opacity: 0.9;
+    font-size: 1.3rem;
+    color: var(--text-muted);
 }
 
-/* ===== BUTTON ===== */
+/* ================= BUTTON ================= */
 .btn-main {
-    background: #ffb703;
-    color: #000;
+    background: var(--accent-red);
+    color: #fff;
     font-weight: 600;
-    padding: 12px 30px;
-    border-radius: 30px;
+    padding: 14px 36px;
+    border-radius: 50px;
+    transition: 0.3s;
 }
 
 .btn-main:hover {
-    background: #ffaa00;
+    background: #be123c;
+    transform: translateY(-2px);
 }
 
-/* ===== CAR CARD ===== */
-.car-card {
-    border: none;
+
+/* ================= FEATURES ================= */
+.features {
+    background: var(--bg-section);
+}
+
+.feature-box {
+    background: var(--bg-card);
     border-radius: 20px;
+    padding: 40px 25px;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-red);
+}
+
+.feature-box:hover .feature-icon {
+    color: var(--accent-red);
+}
+
+
+/* ================= CARS ================= */
+.car-card {
+    background: var(--bg-card);
+    border-radius: 25px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: 0.4s;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
 .car-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border-color: var(--accent-red);
 }
 
+
 .car-card img {
-    height: 220px;
+    height: 230px;
     object-fit: cover;
 }
 
-/* ===== SECTION ===== */
-.section-title {
-    font-weight: 700;
-    margin-bottom: 50px;
+.car-card h5 {
+    font-weight: 600;
 }
 
-/* ===== FEATURES ===== */
-.feature-icon {
-    font-size: 40px;
-    color: #ffb703;
+.price {
+    color: var(--accent-red);
+    font-weight: 600;
 }
+
+/* ================= CTA ================= */
+.cta {
+    background: var(--bg-section);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+/* Section marques de luxe */
+.luxury-brands {
+    background: linear-gradient(135deg, #0d1b2a, #000814);
+    color: #fff;
+}
+
+.luxury-brands h2 {
+    letter-spacing: 1px;
+}
+
+.luxury-brands p {
+    font-size: 1.1rem;
+}
+
+/* Box logo */
+.brand-box {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 30px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.brand-box img {
+    max-height: 55px;
+    filter: grayscale(100%) brightness(0.9);
+    transition: all 0.4s ease;
+}
+
+/* Hover effet luxe */
+.brand-box:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.brand-box:hover img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.1);
+}
+
 </style>
 
-<!-- ===== HERO ===== -->
+<!-- ================= HERO ================= -->
 <section class="hero">
+    <video autoplay muted loop playsinline>
+        <source src="{{ asset('videos/6872095-uhd_3840_2160_25fps.mp4') }}" type="video/mp4">
+        Votre navigateur ne supporte pas la vidéo.
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content">
+        <div class="col-lg-8 mx-auto">
+            <h1>Location de voitures d’exception</h1>
+            <p class="my-4">Vivez une expérience premium avec nos voitures élégantes et puissantes</p>
+            <a href="#" class="btn btn-main">Découvrir nos véhicules</a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="features py-5">
+    <div class="container">
+        <div class="row text-center g-4">
+            
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-car-front-fill"></i>
+                    </div>
+                    <h5>Véhicules récents</h5>
+                    <p class="text-muted">Flotte moderne et entretenue</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h5>Réservation rapide</h5>
+                    <p class="text-muted">Processus simple et efficace</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-box h-100">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h5>Support 24/7</h5>
+                    <p class="text-muted">Assistance dédiée en continu</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ================= CARS ================= -->
+<section class="luxury-brands py-5">
     <div class="container text-center">
-        <h1>Location de voitures premium</h1>
-        <p class="my-4">Des voitures modernes, confortables et au meilleur prix</p>
+        <h2 class="fw-bold mb-3">Nos Marques de Luxe</h2>
+        <p class="text-muted mb-5">
+            Découvrez les marques automobiles les plus prestigieuses
+        </p>
+
+        <div class="row justify-content-center align-items-center g-4">
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg" alt="BMW">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg" alt="Mercedes">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                    <img src="uploads/audi-a3-car-emblem-logo-audi-car-logo-png-brand-image-e8b0cb09d3301c81268dd28931571e8c.png" alt="Audi">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                    <img src="https://cdn.worldvectorlogo.com/logos/lamborghini.svg" alt="Lamborghini">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                 <img src="/uploads/toppng.com-porsche-emblem-with-black-shield-1024x600.png" alt="Porsche">
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="brand-box">
+                 <img src="/uploads/5bbc275b7266f-edc0c76c3b9ed5c2a9ef29e19f3389d5.png" alt="Ferrari">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta py-5 text-center">
+    <div class="container">
+        <h2 class="fw-bold">Prêt à vivre l’expérience premium ?</h2>
+        <p class="my-3 text-secondary">Choisissez votre voiture et prenez la route</p>
         <a href="#" class="btn btn-main">Réserver maintenant</a>
-    </div>
-</section>
-
-<!-- ===== FEATURES ===== -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="feature-icon mb-3">🚗</div>
-                <h5>Large choix</h5>
-                <p>Citadines, SUV, berlines et voitures de luxe</p>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-icon mb-3">💰</div>
-                <h5>Prix compétitifs</h5>
-                <p>Les meilleurs tarifs adaptés à votre budget</p>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-icon mb-3">📞</div>
-                <h5>Support 24/7</h5>
-                <p>Assistance rapide et efficace à tout moment</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===== CARS ===== -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center section-title">Nos voitures populaires</h2>
-
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card car-card">
-                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" class="card-img-top">
-                    <div class="card-body text-center">
-                        <h5>BMW Série 3</h5>
-                        <p class="text-muted">À partir de 80€/jour</p>
-                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card car-card">
-                    <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c4" class="card-img-top">
-                    <div class="card-body text-center">
-                        <h5>Mercedes Classe C</h5>
-                        <p class="text-muted">À partir de 90€/jour</p>
-                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card car-card">
-                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d" class="card-img-top">
-                    <div class="card-body text-center">
-                        <h5>Audi A4</h5>
-                        <p class="text-muted">À partir de 85€/jour</p>
-                        <a href="#" class="btn btn-outline-dark">Voir détails</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===== CTA ===== -->
-<section class="py-5 bg-dark text-white text-center">
-    <div class="container">
-        <h2>Prêt à prendre la route ?</h2>
-        <p class="my-3">Réservez votre voiture en quelques clics</p>
-        <a href="#" class="btn btn-main">Commencer</a>
     </div>
 </section>
 
